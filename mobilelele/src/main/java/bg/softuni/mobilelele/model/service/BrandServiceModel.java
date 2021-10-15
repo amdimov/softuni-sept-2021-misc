@@ -1,13 +1,11 @@
 package bg.softuni.mobilelele.model.service;
 
-import bg.softuni.mobilelele.model.entity.ModelEntity;
-
 import java.util.List;
 
 public class BrandServiceModel {
 
     private String name;
-    private List<ModelEntity> models;
+    private List<ModelServiceModel> models;
 
     public String getName() {
         return name;
@@ -18,11 +16,11 @@ public class BrandServiceModel {
         return this;
     }
 
-    public List<ModelEntity> getModels() {
+    public List<ModelServiceModel> getModels() {
         return models;
     }
 
-    public BrandServiceModel setModels(List<ModelEntity> models) {
+    public BrandServiceModel setModels(List<ModelServiceModel> models) {
         this.models = models;
         return this;
     }

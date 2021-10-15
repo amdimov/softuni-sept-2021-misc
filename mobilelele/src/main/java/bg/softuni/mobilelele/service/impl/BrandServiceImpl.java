@@ -2,6 +2,7 @@ package bg.softuni.mobilelele.service.impl;
 
 import bg.softuni.mobilelele.model.entity.BrandEntity;
 import bg.softuni.mobilelele.model.service.BrandServiceModel;
+import bg.softuni.mobilelele.model.service.ModelServiceModel;
 import bg.softuni.mobilelele.repository.BrandRepository;
 import bg.softuni.mobilelele.service.BrandService;
 import org.modelmapper.ModelMapper;
@@ -35,7 +36,13 @@ public class BrandServiceImpl implements BrandService {
     public List<BrandServiceModel> getAllBrands() {
         return brandRepository.findAll()
                 .stream()
-                .map(brandEntity -> modelMapper.map(brandEntity, BrandServiceModel.class))
+                .map(brandEntity -> {
+                    BrandServiceModel brandServiceModel = modelMapper.map(brandEntity, BrandServiceModel.class);
+                    brandServiceModel.setModels(brandEntity.getModels().stream()
+                            .map(modelEntity -> modelMapper.map(modelEntity, ModelServiceModel.class))
+                            .collect(Collectors.toList()));
+                    return brandServiceModel;
+                })
                 .collect(Collectors.toList());
     }
 }
