@@ -1,8 +1,10 @@
 package bg.softuni.mobilelele.service.impl;
 
+import bg.softuni.mobilelele.model.binding.OfferAddBindModel;
 import bg.softuni.mobilelele.model.entity.OfferEntity;
 import bg.softuni.mobilelele.model.entity.enums.EngineEnum;
 import bg.softuni.mobilelele.model.entity.enums.TransmissionEnum;
+import bg.softuni.mobilelele.model.service.OfferAddServiceModel;
 import bg.softuni.mobilelele.model.service.OfferUpdateServiceModel;
 import bg.softuni.mobilelele.model.view.OfferDetailsView;
 import bg.softuni.mobilelele.model.view.OfferSummaryView;
@@ -10,11 +12,13 @@ import bg.softuni.mobilelele.repository.ModelRepository;
 import bg.softuni.mobilelele.repository.OfferRepository;
 import bg.softuni.mobilelele.repository.UserRepository;
 import bg.softuni.mobilelele.service.OfferService;
+import bg.softuni.mobilelele.user.CurrentUser;
 import bg.softuni.mobilelele.web.exception.ObjectNotFoundException;
-import java.util.List;
-import java.util.stream.Collectors;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class OfferServiceImpl implements OfferService {
@@ -23,12 +27,14 @@ public class OfferServiceImpl implements OfferService {
     private final ModelMapper modelMapper;
     private final ModelRepository modelRepository;
     private final UserRepository userRepository;
+    private final CurrentUser currentUser;
 
-    public OfferServiceImpl(OfferRepository offerRepository, ModelMapper modelMapper, ModelRepository modelRepository, UserRepository userRepository) {
+    public OfferServiceImpl(OfferRepository offerRepository, ModelMapper modelMapper, ModelRepository modelRepository, UserRepository userRepository, CurrentUser currentUser) {
         this.offerRepository = offerRepository;
         this.modelMapper = modelMapper;
         this.modelRepository = modelRepository;
         this.userRepository = userRepository;
+        this.currentUser = currentUser;
     }
 
     @Override
@@ -37,31 +43,31 @@ public class OfferServiceImpl implements OfferService {
         if (offerRepository.count() == 0) {
             OfferEntity offer1 = new OfferEntity();
             offer1
-                .setModel(modelRepository.findById(1L).orElse(null))
-                .setEngine(EngineEnum.GASOLINE)
-                .setTransmission(TransmissionEnum.MANUAL)
-                .setMileage(22500)
-                .setPrice(14300)
-                .setYear(2019)
-                .setDescription("Used, but well services and in good condition.")
-                .setSeller(userRepository.findByUsername("pesho")
-                    .orElse(null)) // or currentUser.getUserName()
-                .setImageUrl(
-                    "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQcXp1KBpDKgYs6VqndkBpX8twjPOZbHV86yg&usqp=CAU");
+                    .setModel(modelRepository.findById(1L).orElse(null))
+                    .setEngine(EngineEnum.GASOLINE)
+                    .setTransmission(TransmissionEnum.MANUAL)
+                    .setMileage(22500)
+                    .setPrice(14300)
+                    .setYear(2019)
+                    .setDescription("Used, but well services and in good condition.")
+                    .setSeller(userRepository.findByUsername("pesho")
+                            .orElse(null)) // or currentUser.getUserName()
+                    .setImageUrl(
+                            "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQcXp1KBpDKgYs6VqndkBpX8twjPOZbHV86yg&usqp=CAU");
 
             OfferEntity offer2 = new OfferEntity();
             offer2
-                .setModel(modelRepository.findById(1L).orElse(null))
-                .setEngine(EngineEnum.DIESEL)
-                .setTransmission(TransmissionEnum.AUTOMATIC)
-                .setMileage(209000)
-                .setPrice(5500)
-                .setYear(2000)
-                .setDescription("After full maintenance, insurance, new tires...")
-                .setSeller(userRepository.findByUsername("admin")
-                    .orElse(null)) // or currentUser.getUserName()
-                .setImageUrl(
-                    "https://www.picclickimg.com/d/l400/pict/283362908243_/FORD-ESCORT-MK5-16L-DOHC-16v-ZETEC.jpg");
+                    .setModel(modelRepository.findById(1L).orElse(null))
+                    .setEngine(EngineEnum.DIESEL)
+                    .setTransmission(TransmissionEnum.AUTOMATIC)
+                    .setMileage(209000)
+                    .setPrice(5500)
+                    .setYear(2000)
+                    .setDescription("After full maintenance, insurance, new tires...")
+                    .setSeller(userRepository.findByUsername("admin")
+                            .orElse(null)) // or currentUser.getUserName()
+                    .setImageUrl(
+                            "https://www.picclickimg.com/d/l400/pict/283362908243_/FORD-ESCORT-MK5-16L-DOHC-16v-ZETEC.jpg");
 
             offerRepository.saveAll(List.of(offer1, offer2));
         }
@@ -75,6 +81,7 @@ public class OfferServiceImpl implements OfferService {
                 map(this::map).
                 collect(Collectors.toList());
     }
+
     @Override
     public OfferDetailsView findById(Long id) {
         OfferDetailsView offerDetailsView = this.offerRepository.findById(id).map(this::mapDetailsView).get();
@@ -90,19 +97,29 @@ public class OfferServiceImpl implements OfferService {
     public void updateOffer(OfferUpdateServiceModel offerModel) {
 
         OfferEntity offerEntity =
-            offerRepository.findById(offerModel.getId()).orElseThrow(() ->
-            new ObjectNotFoundException("Offer with id " + offerModel.getId() + " not found!"));
+                offerRepository.findById(offerModel.getId()).orElseThrow(() ->
+                        new ObjectNotFoundException("Offer with id " + offerModel.getId() + " not found!"));
 
 
         offerEntity.setPrice(offerModel.getPrice())
-            .setDescription(offerModel.getDescription())
-            .setEngine(offerModel.getEngine())
-            .setImageUrl(offerModel.getImageUrl())
-            .setMileage(offerModel.getMileage())
-            .setTransmission(offerModel.getTransmission())
-            .setYear(offerModel.getYear());
+                .setDescription(offerModel.getDescription())
+                .setEngine(offerModel.getEngine())
+                .setImageUrl(offerModel.getImageUrl())
+                .setMileage(offerModel.getMileage())
+                .setTransmission(offerModel.getTransmission())
+                .setYear(offerModel.getYear());
 
         offerRepository.save(offerEntity);
+    }
+
+    @Override
+    public OfferAddServiceModel addOffer(OfferAddBindModel offerAddBindModel) {
+        OfferAddServiceModel offerAddServiceModel = modelMapper.map(offerAddBindModel, OfferAddServiceModel.class)
+                .setModel(modelRepository.findByName(offerAddBindModel.getModel()))
+                .setSeller(userRepository.findByUsername(currentUser.getUserName()).orElseThrow());
+
+        OfferEntity savedOffer = offerRepository.save(modelMapper.map(offerAddServiceModel, OfferEntity.class));
+        return modelMapper.map(savedOffer, OfferAddServiceModel.class);
     }
 
     private OfferSummaryView map(OfferEntity offerEntity) {
