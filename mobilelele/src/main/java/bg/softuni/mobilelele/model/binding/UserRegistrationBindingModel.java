@@ -1,6 +1,8 @@
 package bg.softuni.mobilelele.model.binding;
 
 import bg.softuni.mobilelele.model.validator.UniqueUserName;
+
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
