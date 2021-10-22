@@ -3,12 +3,15 @@ package bg.softuni.mobilelele.service.impl;
 import bg.softuni.mobilelele.model.entity.BrandEntity;
 import bg.softuni.mobilelele.model.entity.ModelEntity;
 import bg.softuni.mobilelele.model.entity.enums.CategoryEnum;
+import bg.softuni.mobilelele.model.service.ModelServiceModel;
 import bg.softuni.mobilelele.repository.BrandRepository;
 import bg.softuni.mobilelele.repository.ModelRepository;
 import bg.softuni.mobilelele.service.ModelService;
+import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class ModelServiceImpl implements ModelService {
@@ -52,4 +55,5 @@ public class ModelServiceImpl implements ModelService {
     public ModelEntity findById(Long id) {
         return modelRepository.findById(id).orElse(null);
     }
+
 }
