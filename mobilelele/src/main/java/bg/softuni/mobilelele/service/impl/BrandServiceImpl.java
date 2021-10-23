@@ -1,15 +1,15 @@
 package bg.softuni.mobilelele.service.impl;
 
 import bg.softuni.mobilelele.model.entity.BrandEntity;
-import bg.softuni.mobilelele.model.service.BrandServiceModel;
-import bg.softuni.mobilelele.model.service.ModelServiceModel;
+import bg.softuni.mobilelele.model.entity.ModelEntity;
+import bg.softuni.mobilelele.model.view.BrandViewModel;
+import bg.softuni.mobilelele.model.view.ModelViewModel;
 import bg.softuni.mobilelele.repository.BrandRepository;
 import bg.softuni.mobilelele.service.BrandService;
-import org.modelmapper.ModelMapper;
-import org.springframework.stereotype.Service;
-
 import java.util.List;
 import java.util.stream.Collectors;
+import org.modelmapper.ModelMapper;
+import org.springframework.stereotype.Service;
 
 @Service
 public class BrandServiceImpl implements BrandService {
@@ -33,16 +33,25 @@ public class BrandServiceImpl implements BrandService {
     }
 
     @Override
-    public List<BrandServiceModel> getAllBrands() {
+    public List<BrandViewModel> getAllBrands() {
         return brandRepository.findAll()
                 .stream()
                 .map(brandEntity -> {
-                    BrandServiceModel brandServiceModel = modelMapper.map(brandEntity, BrandServiceModel.class);
-                    brandServiceModel.setModels(brandEntity.getModels().stream()
-                            .map(modelEntity -> modelMapper.map(modelEntity, ModelServiceModel.class))
-                            .collect(Collectors.toList()));
-                    return brandServiceModel;
+                    BrandViewModel brandViewModel = new BrandViewModel().
+                        setName(brandEntity.getName());
+
+                    brandViewModel.setModels(
+                        brandEntity.
+                            getModels().
+                            stream().
+                            map(this::map).
+                            collect(Collectors.toList()));
+                    return brandViewModel;
                 })
                 .collect(Collectors.toList());
+    }
+
+    private ModelViewModel map(ModelEntity modelEntity) {
+        return modelMapper.map(modelEntity, ModelViewModel.class);
     }
 }

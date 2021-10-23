@@ -18,12 +18,17 @@
 
             <div class="form-group col-md-6 mb-3">
                 <label class="text-center text-white font-weight-bold" for="model">Model</label>
-                <select th:errorclass="is-invalid" id="model" name="model" class="form-control">
+                <select th:errorclass="is-invalid"
+                        id="modelId"
+                        name="modelId"
+                        class="form-control">
                     <option value="">- Select a model -</option>
                     <optgroup th:each="brand : ${brandsModels}" th:label="${brand.name}" label="Brand name">
                         <option th:each="model : ${brand.models}"
-                        th:text="${model.name}" th:value="${model.name}" th:selected="${model.name} == *{model}"
-                        >Model</option>
+                                th:text="${model.name}"
+                                th:value="${model.id}"
+                                th:selected="${model.id} == *{modelId}">Model
+                        </option>
                     </optgroup>
                 </select>
                 <p class="errors alert alert-danger invalid-feedback">

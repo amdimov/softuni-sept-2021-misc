@@ -1,12 +1,11 @@
 package bg.softuni.mobilelele.model.service;
 
-import bg.softuni.mobilelele.model.entity.ModelEntity;
-import bg.softuni.mobilelele.model.entity.UserEntity;
 import bg.softuni.mobilelele.model.entity.enums.EngineEnum;
 import bg.softuni.mobilelele.model.entity.enums.TransmissionEnum;
 
 public class OfferAddServiceModel {
     private Long id;
+    private Long modelId;
     private String description;
     private EngineEnum engine;
     private String imageUrl;
@@ -14,8 +13,6 @@ public class OfferAddServiceModel {
     private int price;
     private TransmissionEnum transmission;
     private int year;
-    private ModelEntity model;
-    private UserEntity seller;
 
     public Long getId() {
         return id;
@@ -23,6 +20,15 @@ public class OfferAddServiceModel {
 
     public OfferAddServiceModel setId(Long id) {
         this.id = id;
+        return this;
+    }
+
+    public Long getModelId() {
+        return modelId;
+    }
+
+    public OfferAddServiceModel setModelId(Long modelId) {
+        this.modelId = modelId;
         return this;
     }
 
@@ -86,24 +92,6 @@ public class OfferAddServiceModel {
 
     public OfferAddServiceModel setYear(int year) {
         this.year = year;
-        return this;
-    }
-
-    public ModelEntity getModel() {
-        return model;
-    }
-
-    public OfferAddServiceModel setModel(ModelEntity model) {
-        this.model = model;
-        return this;
-    }
-
-    public UserEntity getSeller() {
-        return seller;
-    }
-
-    public OfferAddServiceModel setSeller(UserEntity seller) {
-        this.seller = seller;
         return this;
     }
 }

@@ -1,6 +1,7 @@
 package bg.softuni.mobilelele.service.impl;
 
 import bg.softuni.mobilelele.model.binding.OfferAddBindModel;
+import bg.softuni.mobilelele.model.entity.ModelEntity;
 import bg.softuni.mobilelele.model.entity.OfferEntity;
 import bg.softuni.mobilelele.model.entity.enums.EngineEnum;
 import bg.softuni.mobilelele.model.entity.enums.TransmissionEnum;
@@ -14,11 +15,11 @@ import bg.softuni.mobilelele.repository.UserRepository;
 import bg.softuni.mobilelele.service.OfferService;
 import bg.softuni.mobilelele.user.CurrentUser;
 import bg.softuni.mobilelele.web.exception.ObjectNotFoundException;
-import org.modelmapper.ModelMapper;
-import org.springframework.stereotype.Service;
-
+import java.time.Instant;
 import java.util.List;
 import java.util.stream.Collectors;
+import org.modelmapper.ModelMapper;
+import org.springframework.stereotype.Service;
 
 @Service
 public class OfferServiceImpl implements OfferService {
@@ -114,11 +115,14 @@ public class OfferServiceImpl implements OfferService {
 
     @Override
     public OfferAddServiceModel addOffer(OfferAddBindModel offerAddBindModel) {
-        OfferAddServiceModel offerAddServiceModel = modelMapper.map(offerAddBindModel, OfferAddServiceModel.class)
-                .setModel(modelRepository.findByName(offerAddBindModel.getModel()))
-                .setSeller(userRepository.findByUsername(currentUser.getUserName()).orElseThrow());
+        OfferAddServiceModel offerAddServiceModel = modelMapper.map(offerAddBindModel, OfferAddServiceModel.class);
+        OfferEntity newOffer = modelMapper.map(offerAddServiceModel, OfferEntity.class);
+        newOffer.setCreated(Instant.now());
+        newOffer.setSeller(userRepository.findByUsername(currentUser.getUserName()).orElseThrow());
+        ModelEntity model = modelRepository.getById(offerAddBindModel.getModelId());
+        newOffer.setModel(model);
 
-        OfferEntity savedOffer = offerRepository.save(modelMapper.map(offerAddServiceModel, OfferEntity.class));
+        OfferEntity savedOffer = offerRepository.save(newOffer);
         return modelMapper.map(savedOffer, OfferAddServiceModel.class);
     }
 

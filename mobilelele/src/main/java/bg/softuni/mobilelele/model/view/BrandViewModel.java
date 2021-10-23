@@ -1,12 +1,11 @@
 package bg.softuni.mobilelele.model.view;
 
-import bg.softuni.mobilelele.model.service.ModelServiceModel;
-
+import java.util.ArrayList;
 import java.util.List;
 
 public class BrandViewModel {
     private String name;
-    private List<ModelServiceModel> models;
+    private List<ModelViewModel> models = new ArrayList<>();
 
     public String getName() {
         return name;
@@ -17,12 +16,20 @@ public class BrandViewModel {
         return this;
     }
 
-    public List<ModelServiceModel> getModels() {
+    public List<ModelViewModel> getModels() {
         return models;
     }
 
-    public BrandViewModel setModels(List<ModelServiceModel> models) {
+    public BrandViewModel setModels(List<ModelViewModel> models) {
         this.models = models;
+        return this;
+    }
+
+    public BrandViewModel addModel(ModelViewModel model) {
+        if (this.models == null) {
+            this.models = new ArrayList<>();
+        }
+        this.models.add(model);
         return this;
     }
 }

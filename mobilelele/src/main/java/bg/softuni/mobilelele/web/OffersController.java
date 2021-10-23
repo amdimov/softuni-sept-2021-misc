@@ -10,14 +10,17 @@ import bg.softuni.mobilelele.model.view.OfferDetailsView;
 import bg.softuni.mobilelele.service.BrandService;
 import bg.softuni.mobilelele.service.OfferService;
 import bg.softuni.mobilelele.user.CurrentUser;
+import javax.validation.Valid;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-
-import javax.validation.Valid;
 
 @Controller
 public class OffersController {
@@ -107,12 +110,14 @@ public class OffersController {
     @GetMapping("/offers/add")
     public String getAddOfferPage(Model model) {
         // kind of "Security" to avoid browser address bar direct entry
+        // TODO: This security will be removed soon :-)
         if (!currentUser.isLoggedIn()) {
             return "redirect:/users/login";
         }
         if (!model.containsAttribute("offerAddBindModel")) {
-            model.addAttribute("offerAddBindModel", new OfferAddBindModel())
-                    .addAttribute("brandsModels", brandService.getAllBrands());
+            model.
+                addAttribute("offerAddBindModel", new OfferAddBindModel()).
+                addAttribute("brandsModels", brandService.getAllBrands());
         }
         return "offer-add";
     }

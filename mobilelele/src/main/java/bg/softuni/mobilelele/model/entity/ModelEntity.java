@@ -3,12 +3,10 @@ package bg.softuni.mobilelele.model.entity;
 import static javax.persistence.EnumType.STRING;
 
 import bg.softuni.mobilelele.model.entity.enums.CategoryEnum;
-import java.time.Instant;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Enumerated;
 import javax.persistence.ManyToOne;
-import javax.persistence.PrePersist;
 import javax.persistence.Table;
 
 @Entity
@@ -80,10 +78,5 @@ public class ModelEntity extends BaseEntity{
   public ModelEntity setBrand(BrandEntity brand) {
     this.brand = brand;
     return this;
-  }
-
-  @PrePersist
-  public void beforeCreate() {
-    setCreated(Instant.now());
   }
 }

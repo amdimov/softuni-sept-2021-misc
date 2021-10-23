@@ -50,10 +50,11 @@ public abstract class BaseEntity {
 
   @PrePersist
   public void beforeCreate() {
-    this.created = Instant.now();
+    System.out.println("BEFORE CREATE!");
+    setCreated(Instant.now());
   }
 
   @PostPersist void onUpdate() {
-    this.modified = Instant.now();
+    setModified(Instant.now());
   }
 }

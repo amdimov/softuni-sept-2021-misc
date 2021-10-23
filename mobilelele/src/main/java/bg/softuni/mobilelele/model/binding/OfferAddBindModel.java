@@ -2,13 +2,16 @@ package bg.softuni.mobilelele.model.binding;
 
 import bg.softuni.mobilelele.model.entity.enums.EngineEnum;
 import bg.softuni.mobilelele.model.entity.enums.TransmissionEnum;
-
-import javax.validation.constraints.*;
 import java.math.BigDecimal;
+import javax.validation.constraints.DecimalMin;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.PositiveOrZero;
 
 public class OfferAddBindModel {
-    @NotEmpty
-    private String model;
+    @NotNull
+    private Long modelId;
     @NotNull
     @DecimalMin("100")
     private BigDecimal price;
@@ -27,12 +30,12 @@ public class OfferAddBindModel {
     @NotEmpty
     private String imageUrl;
 
-    public String getModel() {
-        return model;
+    public Long getModelId() {
+        return modelId;
     }
 
-    public OfferAddBindModel setModel(String model) {
-        this.model = model;
+    public OfferAddBindModel setModelId(Long modelId) {
+        this.modelId = modelId;
         return this;
     }
 
