@@ -60,6 +60,14 @@ public class BooksController {
         build();
   }
 
+  @PutMapping("/{id}")
+  public ResponseEntity<BookDTO> update(
+      @PathVariable("id") long bookId,
+      @RequestBody BookDTO bookDTO) {
+    //todo
+    throw new UnsupportedOperationException("comming soon!");
+  }
+
   //My mistake :P
   @PostMapping()
   public ResponseEntity<BookDTO> create(
