@@ -9,7 +9,6 @@ import bg.softuni.mobilelele.model.service.OfferUpdateServiceModel;
 import bg.softuni.mobilelele.model.view.OfferDetailsView;
 import bg.softuni.mobilelele.service.BrandService;
 import bg.softuni.mobilelele.service.OfferService;
-import bg.softuni.mobilelele.user.CurrentUser;
 import javax.validation.Valid;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Controller;
@@ -27,14 +26,12 @@ public class OffersController {
     private final OfferService offerService;
     private final ModelMapper modelMapper;
     private final BrandService brandService;
-    private final CurrentUser currentUser;
 
     public OffersController(OfferService offerService,
-                            ModelMapper modelMapper, BrandService brandService, CurrentUser currentUser) {
+                            ModelMapper modelMapper, BrandService brandService) {
         this.offerService = offerService;
         this.modelMapper = modelMapper;
         this.brandService = brandService;
-        this.currentUser = currentUser;
     }
 
     // GET
@@ -109,11 +106,7 @@ public class OffersController {
 
     @GetMapping("/offers/add")
     public String getAddOfferPage(Model model) {
-        // kind of "Security" to avoid browser address bar direct entry
-        // TODO: This security will be removed soon :-)
-        if (!currentUser.isLoggedIn()) {
-            return "redirect:/users/login";
-        }
+
         if (!model.containsAttribute("offerAddBindModel")) {
             model.
                 addAttribute("offerAddBindModel", new OfferAddBindModel()).
