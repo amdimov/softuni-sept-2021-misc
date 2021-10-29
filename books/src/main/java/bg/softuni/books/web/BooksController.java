@@ -55,10 +55,10 @@ public class BooksController {
 
     @PutMapping("/{id}")
     public ResponseEntity<BookDTO> update(@PathVariable("id") long bookId,
-                                          @RequestBody BookDTO bookDTO, UriComponentsBuilder builder) {
-        Long updatedBookId = booksService.updateBook(bookDTO, bookId);
+                                          @RequestBody BookDTO bookDTO) {
+        Long updatedBookId = booksService.updateBook(bookDTO.setId(bookId));
         return updatedBookId != null ?
-                ResponseEntity.created(builder.path("/books/{id}").buildAndExpand(updatedBookId).toUri()).build()
+                ResponseEntity.noContent().build()
                 : ResponseEntity.notFound().build();
     }
 

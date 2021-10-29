@@ -69,10 +69,9 @@ public class BooksServiceImpl implements BooksService {
     }
 
     @Override
-    public Long updateBook(BookDTO bookDTO, Long bookId) {
+    public Long updateBook(BookDTO bookDTO) {
 
-
-        BookEntity bookEntity = bookRepository.findById(bookId)
+        BookEntity bookEntity = bookRepository.findById(bookDTO.getId())
                 .orElse(null);
         if (bookEntity == null) {
             return null;
@@ -80,12 +79,15 @@ public class BooksServiceImpl implements BooksService {
 
         AuthorEntity author = authorRepository.
                 findByName(bookDTO.getAuthor().getName()).
-                orElseGet(() -> new AuthorEntity().setName(bookDTO.getAuthor().getName()));
-
+                orElseGet(() -> {
+                    AuthorEntity newAuthor = new AuthorEntity().setName(bookDTO.getAuthor().getName());
+                    return authorRepository.save(newAuthor);
+                });
 
         bookEntity.setTitle(bookDTO.getTitle())
                 .setIsbn(bookDTO.getIsbn())
                 .setAuthor(author);
+
         return bookRepository.save(bookEntity).getId();
     }
 
