@@ -57,6 +57,9 @@ public class BooksServiceImpl implements BooksService {
                 findByName(bookDTO.getAuthor().getName()).
                 orElseGet(() -> new AuthorEntity().setName(bookDTO.getAuthor().getName()));
 
+        //because of delete "Cascade.TYPE="ALL"
+        this.authorRepository.save(author);
+
         BookEntity newBook = new BookEntity().
                 setAuthor(author).
                 setIsbn(bookDTO.getIsbn()).
@@ -67,15 +70,18 @@ public class BooksServiceImpl implements BooksService {
 
     @Override
     public Long updateBook(BookDTO bookDTO, Long bookId) {
-        AuthorEntity author = authorRepository.
-                findByName(bookDTO.getAuthor().getName()).
-                orElseGet(() -> new AuthorEntity().setName(bookDTO.getAuthor().getName()));
+
 
         BookEntity bookEntity = bookRepository.findById(bookId)
                 .orElse(null);
         if (bookEntity == null) {
             return null;
         }
+
+        AuthorEntity author = authorRepository.
+                findByName(bookDTO.getAuthor().getName()).
+                orElseGet(() -> new AuthorEntity().setName(bookDTO.getAuthor().getName()));
+
 
         bookEntity.setTitle(bookDTO.getTitle())
                 .setIsbn(bookDTO.getIsbn())
