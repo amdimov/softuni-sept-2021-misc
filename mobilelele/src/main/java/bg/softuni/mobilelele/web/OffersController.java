@@ -9,6 +9,7 @@ import bg.softuni.mobilelele.model.service.OfferUpdateServiceModel;
 import bg.softuni.mobilelele.model.view.OfferDetailsView;
 import bg.softuni.mobilelele.service.BrandService;
 import bg.softuni.mobilelele.service.OfferService;
+import java.security.Principal;
 import javax.validation.Valid;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Controller;
@@ -117,14 +118,17 @@ public class OffersController {
 
     @PostMapping("/offers/add")
     public String addOffer(@Valid OfferAddBindModel offerAddBindModel,
-                           BindingResult bindingResult, RedirectAttributes redirectAttributes) {
+                           BindingResult bindingResult,
+                            RedirectAttributes redirectAttributes,
+                            Principal principal) {
         if (bindingResult.hasErrors()) {
             redirectAttributes.addFlashAttribute("offerAddBindModel", offerAddBindModel)
                     .addFlashAttribute("org.springframework.validation.BindingResult.offerAddBindModel", bindingResult)
                     .addFlashAttribute("brandsModels", brandService.getAllBrands());
             return "redirect:/offers/add";
         }
-        OfferAddServiceModel savedOfferAddServiceModel = offerService.addOffer(offerAddBindModel);
+        OfferAddServiceModel savedOfferAddServiceModel =
+            offerService.addOffer(offerAddBindModel, principal);
         return "redirect:/offers/" + savedOfferAddServiceModel.getId() + "/details";
     }
 }

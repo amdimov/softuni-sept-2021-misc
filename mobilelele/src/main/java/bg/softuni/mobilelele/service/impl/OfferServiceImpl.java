@@ -14,6 +14,7 @@ import bg.softuni.mobilelele.repository.OfferRepository;
 import bg.softuni.mobilelele.repository.UserRepository;
 import bg.softuni.mobilelele.service.OfferService;
 import bg.softuni.mobilelele.web.exception.ObjectNotFoundException;
+import java.security.Principal;
 import java.time.Instant;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -111,12 +112,11 @@ public class OfferServiceImpl implements OfferService {
     }
 
     @Override
-    public OfferAddServiceModel addOffer(OfferAddBindModel offerAddBindModel) {
+    public OfferAddServiceModel addOffer(OfferAddBindModel offerAddBindModel, Principal principal) {
         OfferAddServiceModel offerAddServiceModel = modelMapper.map(offerAddBindModel, OfferAddServiceModel.class);
         OfferEntity newOffer = modelMapper.map(offerAddServiceModel, OfferEntity.class);
         newOffer.setCreated(Instant.now());
-        //TODO
-        //newOffer.setSeller(userRepository.findByUsername(currentUser.getUserName()).orElseThrow());
+        newOffer.setSeller(userRepository.findByUsername(principal.getName()).orElseThrow());
         ModelEntity model = modelRepository.getById(offerAddBindModel.getModelId());
         newOffer.setModel(model);
 
