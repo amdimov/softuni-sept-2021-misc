@@ -6,6 +6,7 @@ import org.springframework.security.core.userdetails.User;
 
 public class MobileleUser extends User {
 
+
   public MobileleUser(String username, String password,
       Collection<? extends GrantedAuthority> authorities) {
     super(username, password, authorities);
