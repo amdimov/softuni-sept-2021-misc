@@ -111,12 +111,11 @@ public class OfferServiceImpl implements OfferService {
     }
 
     @Override
-    public OfferAddServiceModel addOffer(OfferAddBindModel offerAddBindModel) {
+    public OfferAddServiceModel addOffer(OfferAddBindModel offerAddBindModel, String ownerId) {
         OfferAddServiceModel offerAddServiceModel = modelMapper.map(offerAddBindModel, OfferAddServiceModel.class);
         OfferEntity newOffer = modelMapper.map(offerAddServiceModel, OfferEntity.class);
         newOffer.setCreated(Instant.now());
-        //TODO
-        //newOffer.setSeller(userRepository.findByUsername(currentUser.getUserName()).orElseThrow());
+        newOffer.setSeller(userRepository.findByUsername(ownerId).orElseThrow());
         ModelEntity model = modelRepository.getById(offerAddBindModel.getModelId());
         newOffer.setModel(model);
 
