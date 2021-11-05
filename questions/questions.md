@@ -19,3 +19,9 @@
 * Как да прочетем Http header в контролер?
 * Spring - как да изтрием куки :-)
 * Разлика между `Controller` и `RestController`
+----
+* Какво е RestTemplate, за какво се използва?
+* Как да вземем optional request parameter в контролер?
+* Как да сложим стойност по подразбиране на optional requst parameter?
+* Разлика Path variable vs Query parameter?
+* Как да запазим параметри при редирект?
