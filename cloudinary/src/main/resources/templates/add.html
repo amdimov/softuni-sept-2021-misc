@@ -6,8 +6,9 @@
 
   <h1>Choose picture</h1>
   <form
-    th:method="post"
-    enctype="multipart/form-data">
+      th:action="@{/pictures/add}"
+      th:method="post"
+      enctype="multipart/form-data">
 
     <input type="text" name="title"/><br/>
     <input name="picture" type="file"/><br>
