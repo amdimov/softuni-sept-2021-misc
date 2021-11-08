@@ -142,4 +142,11 @@ public class OfferServiceImpl implements OfferService {
         offerDetailsView.setSellerFullName(offer.getSeller().getFirstName() + " " + offer.getSeller().getLastName());
         return offerDetailsView;
     }
+
+    @Override
+    public boolean isOwner(String userName, Long offerId) {
+        return
+            offerRepository.findById(offerId).
+                map(o -> userName.equals(o.getSeller().getUsername())).orElse(Boolean.FALSE);
+    }
 }

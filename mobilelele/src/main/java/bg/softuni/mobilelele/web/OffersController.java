@@ -13,6 +13,7 @@ import bg.softuni.mobilelele.service.impl.MobileleUser;
 import javax.validation.Valid;
 import org.modelmapper.ModelMapper;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -51,9 +52,11 @@ public class OffersController {
         return "details";
     }
 
-    // DELETE
+    //@PreAuthorize("isOwner(#id)")
+    //@PreAuthorize("@offerServiceImpl.isOwner(#userDetails.username, #id)")
     @DeleteMapping("/offers/{id}")
-    public String deleteOffer(@PathVariable Long id) {
+    public String deleteOffer(@PathVariable Long id,
+        @AuthenticationPrincipal UserDetails userDetails) {
         offerService.deleteOffer(id);
 
         return "redirect:/offers/all";
