@@ -22,6 +22,12 @@
 ----
 * Какво е RestTemplate, за какво се използва?
 * Как да вземем optional request parameter в контролер?
-* Как да сложим стойност по подразбиране на optional requst parameter?
+* Как да сложим стойност по подразбиране на optional request parameter?
 * Разлика Path variable vs Query parameter?
 * Как да запазим параметри при редирект?
+----
+* HTTP/2 - какво е multiplexing?
+* HTTP/2 - какво е header compression?
+* HTTP/2 - какво е server push?
+* How TLS/SSL handshake works?
+* How can I replace whitelabel page?
