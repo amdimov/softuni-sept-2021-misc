@@ -31,7 +31,6 @@ public class OfferDetailsView {
 
     private Long id;
 
-    //TODO: please implenent!
     private boolean canDelete;
 
     public OfferDetailsView() {
