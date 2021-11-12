@@ -111,7 +111,7 @@ public class OfferServiceImpl implements OfferService {
       OfferEntity offerEntity = offerOpt.get();
 
       return isAdmin(caller.get()) ||
-          offerEntity.getSeller().getUsername().equalsIgnoreCase(userName);
+          offerEntity.getSeller().getUsername().equals(userName);
     }
   }
 
