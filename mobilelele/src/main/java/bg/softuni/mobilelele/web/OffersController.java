@@ -54,8 +54,8 @@ public class OffersController {
     }
 
     // DELETE
-    //@PreAuthorize("isOwner(#id)")//TODO:
-    @PreAuthorize("@offerServiceImpl.isOwner(#principal.name, #id)")
+    @PreAuthorize("isOwner(#id)")
+    //@PreAuthorize("@offerServiceImpl.isOwner(#principal.name, #id)")
     @DeleteMapping("/offers/{id}")
     public String deleteOffer(@PathVariable Long id,
         Principal principal) {
