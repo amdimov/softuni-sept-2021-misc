@@ -1,6 +1,7 @@
 package bg.softuni.mobilelele.config;
 
 import bg.softuni.mobilelele.model.entity.enums.UserRoleEnum;
+import org.springframework.boot.actuate.autoconfigure.security.servlet.EndpointRequest;
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -29,7 +30,8 @@ public class ApplicationSecurityConfiguration extends WebSecurityConfigurerAdapt
           authorizeRequests().
           // with this line we allow access to all static resources
           requestMatchers(PathRequest.toStaticResources().atCommonLocations()).permitAll().
-          // the next line allows access to the home page, login page and registration for everyone
+          requestMatchers(EndpointRequest.toAnyEndpoint()).permitAll().
+        // the next line allows access to the home page, login page and registration for everyone
           antMatchers("/", "/users/login", "/users/register").permitAll().
           // we permit the page below only for admin users
           antMatchers("/statistics").hasRole(UserRoleEnum.ADMIN.name()).
